@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 from apps.properties.models import AmenitiesTags, FeaturesTags, PropertyModel
 
@@ -11,6 +10,7 @@ class AmenitiesTagsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AmenitiesTags
+        fields = "__all__"
 
 
 class FeaturesTagsSerializer(serializers.ModelSerializer):
@@ -20,9 +20,10 @@ class FeaturesTagsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FeaturesTags
+        fields = "__all__"
 
 
-class PropertySerializer(TaggitSerializer, serializers.ModelSerializer):
+class PropertySerializer(serializers.ModelSerializer):
 
     features = serializers.SlugRelatedField(
         many=True, queryset=FeaturesTags.objects.all(), slug_field="text"

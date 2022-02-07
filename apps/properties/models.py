@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.enums import Choices
-from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -31,13 +30,13 @@ class PropertyModel(models.Model):
           https://docs.djangoproject.com/en/4.0/ref/validators/
     """
 
-    posted_by = models.OneToOneField(
+    posted_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="posted_by"
     )
     name = models.SlugField(max_length=80)
 
-    description = models.TextField(null=True, verbose_name="User Bio")
-    address = models.CharField(max_length=255, verbose_name="User Address")
+    description = models.TextField(null=True, verbose_name="Property Description")
+    address = models.CharField(max_length=255, verbose_name="Property Address")
     location = models.CharField(max_length=50, verbose_name="Genral Location")
     pincode = models.CharField(max_length=6)
 
@@ -52,18 +51,18 @@ class PropertyModel(models.Model):
     bedrooms = models.SmallIntegerField()
     bathrooms = models.SmallIntegerField()
 
-    amenities = models.ManyToManyField(AmenitiesTags, related_name="libraries")
-    features = models.ManyToManyField(FeaturesTags, related_name="libraries")
+    amenities = models.ManyToManyField(AmenitiesTags, related_name="amenities")
+    features = models.ManyToManyField(FeaturesTags, related_name="features")
     visits = models.IntegerField(default=0)
 
     PROPERTY_TYPE_CHOICES = [
-        ("A", "Apartment"),
-        ("I", "Independent House"),
-        ("V", "Villa"),
-        ("B", "Builder Floor"),
-        ("P", "Penthouse"),
-        ("S", "Studio Apartment"),
-        ("O", "Other"),
+        ("AP", "Apartment"),
+        ("IH", "Independent House"),
+        ("VI", "Villa"),
+        ("BF", "Builder Floor"),
+        ("PH", "Penthouse"),
+        ("SA", "Studio Apartment"),
+        ("OT", "Other"),
     ]
 
     property_type = models.CharField(max_length=2, choices=PROPERTY_TYPE_CHOICES)
@@ -71,4 +70,3 @@ class PropertyModel(models.Model):
     # - images: ( 1-M ) { Images } Max(8)
 
     objects = models.Manager()
-    url = models.URLField()
