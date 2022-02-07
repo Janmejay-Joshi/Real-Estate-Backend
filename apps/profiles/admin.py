@@ -1,9 +1,7 @@
 from django.contrib import admin
 
-from apps.profiles.models import AgentUserProfile, BuyerUserProfile, SellerUserProfile
+from apps.profiles.models import UserProfileModel
 
 # Register your models here.
 
-admin.site.register(BuyerUserProfile)
-admin.site.register(SellerUserProfile)
-admin.site.register(AgentUserProfile)
+admin.site.register(UserProfileModel)
