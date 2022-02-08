@@ -36,3 +36,7 @@ class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyModel
         fields = "__all__"
+        read_only_fields = (
+            "visits",
+            "timestamp",
+        )

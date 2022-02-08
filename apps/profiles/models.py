@@ -18,10 +18,11 @@ class UserProfileModel(models.Model):
         User, on_delete=models.CASCADE, related_name="user_profile"
     )
 
-    bio = models.TextField(null=True, verbose_name="User Bio")
+    bio = models.TextField(blank=True, verbose_name="User Bio")
     mobile = models.CharField(max_length=10, verbose_name="Phone Number")
     address = models.CharField(max_length=255, verbose_name="User Address")
-    location = models.CharField(max_length=50, verbose_name="Genral Location")
+    city = models.CharField(max_length=50, verbose_name="City")
+    state = models.CharField(max_length=50, verbose_name="State")
     pincode = models.CharField(max_length=6)
     is_prime = models.BooleanField(default=False)
     properties = models.ManyToManyField(
@@ -32,10 +33,10 @@ class UserProfileModel(models.Model):
     )
 
     USER_TYPE_CHOICES = [
-        ("A", "Agent"),
-        ("B", "Buyer"),
-        ("S", "Seller"),
+        ("Agent", "Agent"),
+        ("Buyer", "Buyer"),
+        ("Seller", "Seller"),
     ]
 
-    user_type = models.CharField(max_length=1, choices=USER_TYPE_CHOICES)
+    user_type = models.CharField(max_length=6, choices=USER_TYPE_CHOICES)
     objects = models.Manager()

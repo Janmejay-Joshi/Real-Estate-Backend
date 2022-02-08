@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import (
     AllowAny,
     DjangoObjectPermissions,
@@ -12,6 +13,8 @@ from apps.properties.serializers import (
     FeaturesTagsSerializer,
     PropertySerializer,
 )
+
+from django.db.models import F
 
 # Create your views here.
 
@@ -45,6 +48,7 @@ class PropertyViewSet(GenericViewSet):
 
     def retrieve(self, request, pk):
         item = self.get_object()
+        PropertyModel.objects.filter(pk=pk).update(visits=F("visits") + 1)
         serializer = self.get_serializer(item)
         return Response(serializer.data)
 
@@ -52,6 +56,8 @@ class PropertyViewSet(GenericViewSet):
         item = self.get_object()
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    ## City Name Type
 
 
 class FeaturesTagsViewSets(GenericViewSet):

@@ -33,11 +33,14 @@ class PropertyModel(models.Model):
     posted_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="posted_by"
     )
+
     name = models.SlugField(max_length=80)
+    property_name = models.TextField(max_length=80)
 
     description = models.TextField(null=True, verbose_name="Property Description")
     address = models.CharField(max_length=255, verbose_name="Property Address")
-    location = models.CharField(max_length=50, verbose_name="Genral Location")
+    city = models.CharField(max_length=50, verbose_name="City")
+    state = models.CharField(max_length=50, verbose_name="State")
     pincode = models.CharField(max_length=6)
 
     prime_property = models.BooleanField(default=False)
@@ -45,14 +48,17 @@ class PropertyModel(models.Model):
     property_size = models.SmallIntegerField()
     furnishing_status = models.BooleanField()
 
-    timestamp = models.DateTimeField()
-
     availability = models.CharField(max_length=100)
     bedrooms = models.SmallIntegerField()
     bathrooms = models.SmallIntegerField()
 
-    amenities = models.ManyToManyField(AmenitiesTags, related_name="amenities")
-    features = models.ManyToManyField(FeaturesTags, related_name="features")
+    amenities = models.ManyToManyField(
+        AmenitiesTags, blank=True, related_name="amenities"
+    )
+    features = models.ManyToManyField(FeaturesTags, blank=True, related_name="features")
+
+    # Auto
+    timestamp = models.DateTimeField(auto_now_add=True)
     visits = models.IntegerField(default=0)
 
     PROPERTY_TYPE_CHOICES = [
