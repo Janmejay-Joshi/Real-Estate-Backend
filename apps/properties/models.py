@@ -41,11 +41,20 @@ class PropertyModel(models.Model):
           https://docs.djangoproject.com/en/4.0/ref/validators/
     """
 
+    # MultiValued Feilds
+
     posted_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="posted_by"
     )
 
-    image = models.ManyToManyField("properties.Image", related_name="products")
+    image = models.ManyToManyField("properties.Image", related_name="products", blank=True)
+
+    amenities = models.ManyToManyField(
+        AmenitiesTags, blank=True, related_name="amenities"
+    )
+    features = models.ManyToManyField(FeaturesTags, blank=True, related_name="features")
+
+    # General Feilds
 
     name = models.SlugField(max_length=80)
     property_name = models.TextField(max_length=80)
@@ -58,21 +67,35 @@ class PropertyModel(models.Model):
 
     prime_property = models.BooleanField(default=False)
     price = models.BigIntegerField()
-    property_size = models.SmallIntegerField()
-    furnishing_status = models.BooleanField()
+    property_size = models.IntegerField()
 
-    availability = models.CharField(max_length=100)
-    bedrooms = models.SmallIntegerField()
-    bathrooms = models.SmallIntegerField()
+    availability = models.DateTimeField()
 
-    amenities = models.ManyToManyField(
-        AmenitiesTags, blank=True, related_name="amenities"
-    )
-    features = models.ManyToManyField(FeaturesTags, blank=True, related_name="features")
+    FOR_TYPE_CHOICES = [
+        ("sale", "Sale"),
+        ("rent", "Rent"),
+    ]
 
-    # Auto
-    timestamp = models.DateTimeField(auto_now_add=True)
-    visits = models.IntegerField(default=0)
+    BEDROOMS_TYPE_CHOICES = [
+        ("1", "1"),
+        ("2", "2"),
+        ("3", "3"),
+        ("4", "4"),
+        ("5+", "5+"),
+    ]
+
+    BATHROOMS_TYPE_CHOICES = [
+        ("1", "1"),
+        ("2", "2"),
+        ("3", "3"),
+        ("4+", "4+"),
+    ]
+
+    FURNISHING_TYPE_CHOICES = [
+        ("furnished", "Furnished"),
+        ("semifurnished", "Semi furnished"),
+        ("unfurnished", "Unfurnished"),
+    ]
 
     PROPERTY_TYPE_CHOICES = [
         ("AP", "Apartment"),
@@ -84,8 +107,25 @@ class PropertyModel(models.Model):
         ("OT", "Other"),
     ]
 
+    POSSESSION_TYPE_CHOICES = [
+        ("Under Construction", "Under Construction"),
+        ("Ready To Move", "Ready To Move"),
+    ]
+
+    # Choice Based Feilds
+
+    furnishing_status = models.CharField(max_length=25, choices=FURNISHING_TYPE_CHOICES)
+    for_status = models.CharField(max_length=4, choices=FOR_TYPE_CHOICES)
+
+    bathrooms = models.CharField(max_length=2, choices=BATHROOMS_TYPE_CHOICES)
+    bedrooms = models.CharField(max_length=2, choices=BEDROOMS_TYPE_CHOICES)
+
+    possession = models.CharField(max_length=25, choices=POSSESSION_TYPE_CHOICES)
+
     property_type = models.CharField(max_length=2, choices=PROPERTY_TYPE_CHOICES)
 
-    # - images: ( 1-M ) { Images } Max(8)
+    # Auto Feilds
+    timestamp = models.DateTimeField(auto_now_add=True)
+    visits = models.IntegerField(default=0)
 
     objects = models.Manager()

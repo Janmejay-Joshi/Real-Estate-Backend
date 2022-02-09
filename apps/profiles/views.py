@@ -14,6 +14,13 @@ from apps.profiles.serializers import UserProfileSerializer
 
 
 class UserProfileViewSet(GenericViewSet):
+
+    """
+    Create, update fetch or destroy an (UserProfile) instance
+    url: /api/profile/ , /api/profile/<int:pk>
+    actions: [GET, POST, PUT, PATCH, DELETE]
+    """
+
     serializer_class = UserProfileSerializer
     queryset = UserProfileModel.objects.all()
     permission_classes = [DjangoObjectPermissions]

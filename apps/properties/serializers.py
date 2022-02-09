@@ -6,6 +6,10 @@ from rest_flex_fields import FlexFieldsModelSerializer
 
 
 class AmenitiesTagsSerializer(serializers.ModelSerializer):
+    """
+    Serve Data for AmenitiesTags Model
+    """
+
     property = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="name"
     )
@@ -16,6 +20,10 @@ class AmenitiesTagsSerializer(serializers.ModelSerializer):
 
 
 class FeaturesTagsSerializer(serializers.ModelSerializer):
+    """
+    Serve Data for FeaturesTags Model
+    """
+
     property = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="name"
     )
@@ -26,6 +34,10 @@ class FeaturesTagsSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(FlexFieldsModelSerializer):
+    """
+    Serve Data for Image Model and Resizes Uploaded Images for Thumbnail and Full Resolution
+    """
+
     image = VersatileImageFieldSerializer(
         sizes=[
             ("full_size", "url"),
@@ -39,6 +51,9 @@ class ImageSerializer(FlexFieldsModelSerializer):
 
 
 class PropertySerializer(FlexFieldsModelSerializer):
+    """
+    Serve Data for Property Model has an Expandable Fields for Images
+    """
 
     features = serializers.SlugRelatedField(
         many=True, queryset=FeaturesTags.objects.all(), slug_field="text"

@@ -5,6 +5,11 @@ from apps.properties.models import PropertyModel
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    """
+    Serves Data For the UserProfileModel
+    TODO: Add Expandable Feilds for Image and Properties
+    """
+
     class Meta:
         model = UserProfileModel
         fields = "__all__"
