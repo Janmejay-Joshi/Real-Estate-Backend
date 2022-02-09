@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import SET_NULL
 
-from apps.properties.models import PropertyModel, Image
+from apps.properties.models import PropertyModel
 
 
 # Create your models here.
@@ -30,6 +30,7 @@ class UserProfileModel(models.Model):
     state = models.CharField(max_length=50, verbose_name="State")
     pincode = models.CharField(max_length=6)
     is_prime = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     properties = models.ManyToManyField(
         PropertyModel, related_name="properties", blank=True
     )
@@ -39,9 +40,9 @@ class UserProfileModel(models.Model):
 
     USER_TYPE_CHOICES = [
         ("Agent", "Agent"),
-        ("Buyer", "Buyer"),
-        ("Seller", "Seller"),
+        ("Buyer/Owner", "Buyer/Owner"),
+        ("Builder", "Builder"),
     ]
 
-    user_type = models.CharField(max_length=6, choices=USER_TYPE_CHOICES)
+    user_type = models.CharField(max_length=11, choices=USER_TYPE_CHOICES)
     objects = models.Manager()

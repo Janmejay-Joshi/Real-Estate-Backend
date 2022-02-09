@@ -17,7 +17,7 @@ class UserProfileViewSet(GenericViewSet):
 
     """
     Create, update fetch or destroy an (UserProfile) instance
-    url: /api/profile/ , /api/profile/<int:pk>
+    url: /api/profile/ , /api/profile/<string:username>
     actions: [GET, POST, PUT, PATCH, DELETE]
     """
 
