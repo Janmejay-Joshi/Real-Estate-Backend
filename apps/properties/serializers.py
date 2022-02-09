@@ -71,5 +71,5 @@ class PropertySerializer(FlexFieldsModelSerializer):
             "timestamp",
         )
         expandable_fields = {
-            "image": ("reviews.ImageSerializer", {"many": True}),
+            "image": ("apps.properties.ImageSerializer", {"many": True}),
         }
