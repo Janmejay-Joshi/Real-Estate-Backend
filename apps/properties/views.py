@@ -1,7 +1,6 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import (
     AllowAny,
     DjangoObjectPermissions,
@@ -23,12 +22,23 @@ from rest_flex_fields import FlexFieldsModelViewSet
 
 
 class ImageViewSet(FlexFieldsModelViewSet):
+    """
+    Create, update fetch or destroy an (Image) instance
+    url: /api/image/ , /api/image/<int:pk>
+    actions: [GET, POST, PUT, PATCH, DELETE]
+    """
 
     serializer_class = ImageSerializer
     queryset = Image.objects.all()
 
 
 class PropertyViewSet(GenericViewSet):
+    """
+    Create, update fetch or destroy an (Property) instance
+    url: /api/property/ , /api/property/<int:pk>
+    actions: [GET, POST, PUT, PATCH, DELETE]
+    """
+
     serializer_class = PropertySerializer
     queryset = PropertyModel.objects.all()
     permission_classes = [DjangoObjectPermissions]
@@ -86,13 +96,16 @@ class PropertyViewSet(GenericViewSet):
 
 
 class PropertyFilter(generics.ListAPIView):
+    """
+    Fetch all (Property) instance with filters provided in the params
+    url: /api/filter
+    example: /api/filter?city=indore&prime=True
+    actions: [GET]
+    """
+
     serializer_class = PropertySerializer
 
     def get_queryset(self):
-        """
-        This view should return a list of all the purchases
-        for the currently authenticated user.
-        """
         queryset = PropertyModel.objects.all()
         city = self.request.query_params.get("city")
         type = self.request.query_params.get("type")
@@ -129,6 +142,13 @@ class PropertyFilter(generics.ListAPIView):
 
 
 class FeaturesTagsViewSets(GenericViewSet):
+
+    """
+    Create, update fetch or destroy an (Feture Tag) instance
+    url: /api/tags/features/ , /api/tags/features/<int:pk>/
+    actions: [GET, POST, DELETE]
+    """
+
     serializer_class = FeaturesTagsSerializer
     queryset = FeaturesTags.objects.all()
     permission_classes = [AllowAny]
@@ -157,6 +177,13 @@ class FeaturesTagsViewSets(GenericViewSet):
 
 
 class AmenitiesTagsViewSets(GenericViewSet):
+
+    """
+    Create, update fetch or destroy an (Amenities Tag) instance
+    url: /api/tags/amenities/ , /api/tags/amenities/<int:pk>/
+    actions: [GET, POST, DELETE]
+    """
+
     serializer_class = AmenitiesTagsSerializer
     queryset = AmenitiesTags.objects.all()
     permission_classes = [AllowAny]
