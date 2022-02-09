@@ -10,6 +10,9 @@ django = "*"
 datetime = "*"
 django-allauth = "*"
 dj-rest-auth = "*"
+django-versatileimagefield = "*"
+django-filter = "*"
+drf-flex-fields = "*"
 
 [dev-packages]
 

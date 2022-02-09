@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.enums import Choices
+from versatileimagefield.fields import VersatileImageField, PPOIField
 
 # Create your models here.
 
@@ -23,6 +23,17 @@ class FeaturesTags(models.Model):
         return "Tag[id: {id}, text: {text}]".format(id=self.id, text=self.text)
 
 
+class Image(models.Model):
+    name = models.CharField(max_length=255)
+    image = VersatileImageField("Image", upload_to="images/", ppoi_field="image_ppoi")
+    image_ppoi = PPOIField()
+
+    objects = models.Manager
+
+    def __str__(self):
+        return self.name
+
+
 class PropertyModel(models.Model):
     """
     Data Model For Template Profile Inherited By The Main Profiles
@@ -33,6 +44,8 @@ class PropertyModel(models.Model):
     posted_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="posted_by"
     )
+
+    image = models.ManyToManyField("properties.Image", related_name="products")
 
     name = models.SlugField(max_length=80)
     property_name = models.TextField(max_length=80)

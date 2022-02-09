@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from apps.properties.models import AmenitiesTags, FeaturesTags, PropertyModel
+from apps.properties.models import AmenitiesTags, FeaturesTags, PropertyModel, Image
+from versatileimagefield.serializers import VersatileImageFieldSerializer
+from rest_flex_fields import FlexFieldsModelSerializer
 
 
 class AmenitiesTagsSerializer(serializers.ModelSerializer):
@@ -23,7 +25,20 @@ class FeaturesTagsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class PropertySerializer(serializers.ModelSerializer):
+class ImageSerializer(FlexFieldsModelSerializer):
+    image = VersatileImageFieldSerializer(
+        sizes=[
+            ("full_size", "url"),
+            ("thumbnail", "thumbnail__100x100"),
+        ]
+    )
+
+    class Meta:
+        model = Image
+        fields = ["pk", "name", "image"]
+
+
+class PropertySerializer(FlexFieldsModelSerializer):
 
     features = serializers.SlugRelatedField(
         many=True, queryset=FeaturesTags.objects.all(), slug_field="text"
@@ -40,3 +55,6 @@ class PropertySerializer(serializers.ModelSerializer):
             "visits",
             "timestamp",
         )
+        expandable_fields = {
+            "image": ("reviews.ImageSerializer", {"many": True}),
+        }

@@ -8,16 +8,24 @@ from rest_framework.permissions import (
     IsAuthenticated,
 )
 from rest_framework import status
-from apps.properties.models import AmenitiesTags, FeaturesTags, PropertyModel
+from apps.properties.models import AmenitiesTags, FeaturesTags, Image, PropertyModel
 from apps.properties.serializers import (
     AmenitiesTagsSerializer,
     FeaturesTagsSerializer,
+    ImageSerializer,
     PropertySerializer,
 )
 
 from django.db.models import F
+from rest_flex_fields import FlexFieldsModelViewSet
 
 # Create your views here.
+
+
+class ImageViewSet(FlexFieldsModelViewSet):
+
+    serializer_class = ImageSerializer
+    queryset = Image.objects.all()
 
 
 class PropertyViewSet(GenericViewSet):
@@ -52,6 +60,22 @@ class PropertyViewSet(GenericViewSet):
         PropertyModel.objects.filter(pk=pk).update(visits=F("visits") + 1)
         serializer = self.get_serializer(item)
         return Response(serializer.data)
+
+    def update(self, request, pk):
+        property = self.get_object()
+        serializer = self.get_serializer(property, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def partial_update(self, request, pk):
+        property = self.get_object()
+        serializer = self.get_serializer(property, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def destroy(self, request):
         item = self.get_object()

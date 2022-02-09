@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.deletion import SET_NULL
 
-from apps.properties.models import PropertyModel
+from apps.properties.models import PropertyModel, Image
 
 
 # Create your models here.
@@ -16,6 +17,10 @@ class UserProfileModel(models.Model):
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="user_profile"
+    )
+
+    image = models.OneToOneField(
+        "properties.Image", null=True, related_name="cover", on_delete=SET_NULL
     )
 
     bio = models.TextField(blank=True, verbose_name="User Bio")
