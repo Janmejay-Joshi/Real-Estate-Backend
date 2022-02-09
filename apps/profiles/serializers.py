@@ -10,6 +10,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     TODO: Add Expandable Feilds for Image and Properties
     """
 
+    username = serializers.ReadOnlyField(source="user.username")
+
     class Meta:
         model = UserProfileModel
         fields = "__all__"
