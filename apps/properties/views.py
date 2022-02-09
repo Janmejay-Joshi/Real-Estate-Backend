@@ -112,6 +112,8 @@ class PropertyFilter(generics.ListAPIView):
         property_name = self.request.query_params.get("name")
         prime = self.request.query_params.get("prime")
         furnishing = self.request.query_params.get("furnishing")
+        positon = self.request.query_params.get("position")
+        for_status = self.request.query_params.get("for")
         up_limit = self.request.query_params.get("max")
         low_limit = self.request.query_params.get("min")
         bathroom = self.request.query_params.get("bathroom")
@@ -138,6 +140,10 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(bedroom=bedroom)
         if availability is not None:
             queryset = queryset.filter(availability=availability)
+        if positon is not None:
+            queryset = queryset.filter(positon=positon)
+        if for_status is not None:
+            queryset = queryset.filter(for_status=for_status)
         return queryset
 
 
