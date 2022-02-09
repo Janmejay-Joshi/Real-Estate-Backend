@@ -13,6 +13,7 @@ dj-rest-auth = "*"
 django-versatileimagefield = "*"
 django-filter = "*"
 drf-flex-fields = "*"
+python-magic-bin = "*"
 
 [dev-packages]
 
