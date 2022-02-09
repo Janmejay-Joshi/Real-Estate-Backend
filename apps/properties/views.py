@@ -25,7 +25,7 @@ class PropertyViewSet(GenericViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action in ("list", "retrieve"):
+        if self.action in ("list", "retrieve", "create"):
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAuthenticated]
