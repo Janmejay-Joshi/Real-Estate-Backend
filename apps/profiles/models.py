@@ -25,10 +25,8 @@ class UserProfileModel(models.Model):
 
     bio = models.TextField(blank=True, verbose_name="User Bio")
     mobile = models.CharField(max_length=10, verbose_name="Phone Number")
-    address = models.CharField(max_length=255, verbose_name="User Address")
     city = models.CharField(max_length=50, verbose_name="City")
     state = models.CharField(max_length=50, verbose_name="State")
-    pincode = models.CharField(max_length=6)
     is_prime = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     properties = models.ManyToManyField(
