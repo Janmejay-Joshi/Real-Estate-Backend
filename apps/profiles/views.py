@@ -1,3 +1,4 @@
+from rest_flex_fields.views import FlexFieldsModelViewSet
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import (
@@ -13,7 +14,7 @@ from apps.profiles.serializers import UserProfileSerializer
 # Create your views here.
 
 
-class UserProfileViewSet(GenericViewSet):
+class UserProfileViewSet(FlexFieldsModelViewSet):
 
     """
     Create, update fetch or destroy an (UserProfile) instance
