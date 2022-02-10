@@ -7,6 +7,7 @@ from apps.properties.views import (
     ImageViewSet,
     PropertyFilter,
     PropertyViewSet,
+    WishUpdateView,
 )
 
 router = DefaultRouter()
@@ -18,4 +19,5 @@ router.register(r"image", ImageViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("filter", PropertyFilter.as_view()),
+    path("wish", WishUpdateView.as_view()),
 ]

@@ -47,12 +47,16 @@ class PropertyModel(models.Model):
         User, on_delete=models.CASCADE, related_name="posted_by"
     )
 
-    image = models.ManyToManyField("properties.Image", related_name="products", blank=True)
+    image = models.ManyToManyField(
+        "properties.Image", related_name="products", blank=True
+    )
 
     amenities = models.ManyToManyField(
         AmenitiesTags, blank=True, related_name="amenities"
     )
     features = models.ManyToManyField(FeaturesTags, blank=True, related_name="features")
+
+    whished_by = models.ManyToManyField(User, related_name="wished_by", blank=True)
 
     # General Feilds
 
@@ -70,6 +74,8 @@ class PropertyModel(models.Model):
     property_size = models.IntegerField()
 
     availability = models.DateTimeField()
+
+    # Choices
 
     FOR_TYPE_CHOICES = [
         ("sale", "Sale"),

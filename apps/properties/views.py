@@ -1,6 +1,9 @@
-from rest_framework import generics
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
+from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework.permissions import (
     AllowAny,
     DjangoObjectPermissions,
@@ -15,10 +18,22 @@ from apps.properties.serializers import (
     PropertySerializer,
 )
 
+from apps.profiles.models import UserProfileModel
+
 from django.db.models import F
 from rest_flex_fields import FlexFieldsModelViewSet
 
 # Create your views here.
+
+
+class WishUpdateView(APIView):
+    def post(self, request, format=None, **kwargs):
+        user = get_object_or_404(User, pk=request.data["user"])
+        property = get_object_or_404(PropertyModel, pk=request.data["property"])
+        profile = get_object_or_404(UserProfileModel, pk=request.data["profile"])
+
+        property.wished_by.add(user)
+        profile.wishlist(property)
 
 
 class ImageViewSet(FlexFieldsModelViewSet):

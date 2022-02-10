@@ -30,7 +30,7 @@ class UserProfileViewSet(GenericViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action in ("list", "create", "retrieve"):
+        if self.action in ("list", "create", "retrieve", "update", "partial_update"):
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAuthenticated]
