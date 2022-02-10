@@ -15,7 +15,10 @@ class UserProfileSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = UserProfileModel
         fields = "__all__"
-        read_only_fields = ("is_prime",)
+        read_only_fields = (
+            "is_prime",
+            "user",
+        )
 
         expandable_fields = {
             "image": ("apps.properties.ImageSerializer"),
