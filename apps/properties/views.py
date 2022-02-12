@@ -99,6 +99,9 @@ class PropertyViewSet(GenericViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
+        owner = get_object_or_404(UserProfileModel, pk=request.data["posted_by"])
+        owner.properties.add(serializer.data["id"])
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request):
@@ -161,9 +164,12 @@ class PropertyFilter(generics.ListAPIView):
         posted_by = self.request.query_params.get("posted_by")
         popular = self.request.query_params.get("popular")
         featured = self.request.query_params.get("featured")
+        location = self.request.query_params.get("location")
 
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
+        if location is not None:
+            queryset = queryset.filter(location=location)
         if posted_by is not None:
             queryset = queryset.filter(posted_by=posted_by)
         if city is not None:
