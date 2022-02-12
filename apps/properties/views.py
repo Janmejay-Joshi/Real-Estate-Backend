@@ -150,9 +150,9 @@ class PropertyFilter(generics.ListAPIView):
         if up_limit is not None:
             queryset = queryset.filter(price__lte=up_limit)
         if bathroom is not None:
-            queryset = queryset.filter(bathroom=bathroom)
+            queryset = queryset.filter(bathrooms=bathroom)
         if bedroom is not None:
-            queryset = queryset.filter(bedroom=bedroom)
+            queryset = queryset.filter(bedrooms=bedroom)
         if availability is not None:
             queryset = queryset.filter(availability=availability)
         if possession is not None:
