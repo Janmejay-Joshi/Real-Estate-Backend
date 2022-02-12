@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from versatileimagefield.fields import VersatileImageField, PPOIField
 
+
 # Create your models here.
 
 
@@ -11,16 +12,7 @@ class AmenitiesTags(models.Model):
     objects = models.Manager
 
     def __str__(self):
-        return "Tag[id: {id}, text: {text}]".format(id=self.id, text=self.text)
-
-
-class FeaturesTags(models.Model):
-    text = models.CharField(max_length=64, unique=True)
-
-    objects = models.Manager
-
-    def __str__(self):
-        return "Tag[id: {id}, text: {text}]".format(id=self.id, text=self.text)
+        return self.text
 
 
 class Image(models.Model):
@@ -44,7 +36,7 @@ class PropertyModel(models.Model):
     # MultiValued Feilds
 
     posted_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="posted_by"
+        "profiles.UserProfileModel", on_delete=models.CASCADE, related_name="posted_by"
     )
 
     image = models.ManyToManyField(
@@ -54,9 +46,10 @@ class PropertyModel(models.Model):
     amenities = models.ManyToManyField(
         AmenitiesTags, blank=True, related_name="amenities"
     )
-    features = models.ManyToManyField(FeaturesTags, blank=True, related_name="features")
 
-    whished_by = models.ManyToManyField(User, related_name="wished_by", blank=True)
+    wished_by = models.ManyToManyField(
+        "profiles.UserProfileModel", related_name="wished_by", blank=True
+    )
 
     # General Feilds
 
@@ -72,6 +65,7 @@ class PropertyModel(models.Model):
     prime_property = models.BooleanField(default=False)
     price = models.BigIntegerField()
     property_size = models.IntegerField()
+    is_active = models.BooleanField(default=True)
 
     availability = models.DateTimeField()
 
@@ -80,6 +74,7 @@ class PropertyModel(models.Model):
     FOR_TYPE_CHOICES = [
         ("sale", "Sale"),
         ("rent", "Rent"),
+        ("pg", "Paying Geust"),
     ]
 
     BEDROOMS_TYPE_CHOICES = [

@@ -10,15 +10,14 @@ from rest_framework.permissions import (
     IsAuthenticated,
 )
 from rest_framework import status
-from apps.properties.models import AmenitiesTags, FeaturesTags, Image, PropertyModel
+from apps.properties.models import AmenitiesTags, Image, PropertyModel
 from apps.properties.serializers import (
     AmenitiesTagsSerializer,
-    FeaturesTagsSerializer,
     ImageSerializer,
     PropertySerializer,
 )
 
-from apps.profiles.models import UserProfileModel
+from apps.profiles.models import Contacted, UserProfileModel
 
 from django.db.models import F
 from rest_flex_fields import FlexFieldsModelViewSet
@@ -28,12 +27,39 @@ from rest_flex_fields import FlexFieldsModelViewSet
 
 class WishUpdateView(APIView):
     def post(self, request, format=None, **kwargs):
-        user = get_object_or_404(User, pk=request.data["user"])
         property = get_object_or_404(PropertyModel, pk=request.data["property"])
         profile = get_object_or_404(UserProfileModel, pk=request.data["profile"])
 
-        property.wished_by.add(user)
-        profile.wishlist(property)
+        try:
+            if (
+                profile.__class__.objects.filter(wishlist__pk=request.data["property"])[
+                    0
+                ]
+                == profile
+            ):
+                property.wished_by.remove(profile)
+                profile.wishlist.remove(property)
+                return Response(status=status.HTTP_204_NO_CONTENT)
+        except IndexError:
+            property.wished_by.add(profile)
+            profile.wishlist.add(property)
+            return Response(status=status.HTTP_201_CREATED)
+
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ContactedView(APIView):
+    def post(self, request, format=None, **kwargs):
+        owner = get_object_or_404(UserProfileModel, pk=request.data["owner"])
+        buyer = get_object_or_404(UserProfileModel, pk=request.data["buyer"])
+        property = get_object_or_404(PropertyModel, pk=request.data["property"])
+
+        contact_owner = Contacted.objects.create(user=buyer, property=property)
+        contact_buyer = Contacted.objects.create(user=owner, property=property)
+
+        owner.contacted_by.add(contact_owner)
+        buyer.contacted_to.add(contact_buyer)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class ImageViewSet(FlexFieldsModelViewSet):
@@ -107,8 +133,6 @@ class PropertyViewSet(GenericViewSet):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    ## City Name Type
-
 
 class PropertyFilter(generics.ListAPIView):
     """
@@ -124,19 +148,24 @@ class PropertyFilter(generics.ListAPIView):
         queryset = PropertyModel.objects.all()
         city = self.request.query_params.get("city")
         type = self.request.query_params.get("type")
-        property_name = self.request.query_params.get("name")
+        property_name = self.request.query_params.get("property_name")
         prime = self.request.query_params.get("prime")
         furnishing = self.request.query_params.get("furnishing")
         possession = self.request.query_params.get("possession")
         for_status = self.request.query_params.get("for")
         up_limit = self.request.query_params.get("max")
         low_limit = self.request.query_params.get("min")
-        bathroom = self.request.query_params.get("bathroom")
-        bedroom = self.request.query_params.get("bedroom")
+        bathroom = self.request.query_params.get("bathrooms")
+        bedroom = self.request.query_params.get("bedrooms")
         availability = self.request.query_params.get("availability")
+        posted_by = self.request.query_params.get("posted_by")
+        popular = self.request.query_params.get("popular")
+        featured = self.request.query_params.get("featured")
 
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
+        if posted_by is not None:
+            queryset = queryset.filter(posted_by=posted_by)
         if city is not None:
             queryset = queryset.filter(city=city)
         if prime is not None:
@@ -159,42 +188,11 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(possession=possession)
         if for_status is not None:
             queryset = queryset.filter(for_status=for_status)
+        if popular is not None or popular is not False:
+            queryset = queryset.order_by("-visits")
+        if featured is not None or featured is not False:
+            queryset = queryset.order_by("-prime_property")
         return queryset
-
-
-class FeaturesTagsViewSets(GenericViewSet):
-
-    """
-    Create, update fetch or destroy an (Feture Tag) instance
-    url: /api/tags/features/ , /api/tags/features/<int:pk>/
-    actions: [GET, POST, DELETE]
-    """
-
-    serializer_class = FeaturesTagsSerializer
-    queryset = FeaturesTags.objects.all()
-    permission_classes = [AllowAny]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def list(self, request):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
-        # return self.get_paginated_response(self.paginate_queryset(serializer.data))
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk):
-        item = self.get_object()
-        serializer = self.get_serializer(item)
-        return Response(serializer.data)
-
-    def destroy(self, request):
-        item = self.get_object()
-        item.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class AmenitiesTagsViewSets(GenericViewSet):

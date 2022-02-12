@@ -8,6 +8,23 @@ from apps.properties.models import PropertyModel
 # Create your models here.
 
 
+class Contacted(models.Model):
+    user = models.ForeignKey(
+        "profiles.UserProfileModel",
+        related_name="contact_profile",
+        on_delete=models.DO_NOTHING,
+    )
+    property = models.ForeignKey(
+        "properties.PropertyModel",
+        related_name="contacted_property",
+        on_delete=models.DO_NOTHING,
+    )
+
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
+
+
 class UserProfileModel(models.Model):
     """
     Data Model For User Profile
@@ -36,6 +53,14 @@ class UserProfileModel(models.Model):
         PropertyModel, related_name="wishlist", blank=True
     )
 
+    contacted_by = models.ManyToManyField(
+        "profiles.Contacted", related_name="contacted_by", blank=True
+    )
+
+    contacted_to = models.ManyToManyField(
+        "profiles.Contacted", related_name="contacted_to", blank=True
+    )
+
     USER_TYPE_CHOICES = [
         ("Agent", "Agent"),
         ("Buyer/Owner", "Buyer/Owner"),
@@ -43,4 +68,5 @@ class UserProfileModel(models.Model):
     ]
 
     user_type = models.CharField(max_length=11, choices=USER_TYPE_CHOICES)
+
     objects = models.Manager()
