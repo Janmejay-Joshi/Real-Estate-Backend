@@ -67,6 +67,8 @@ class PropertyModel(models.Model):
     price = models.BigIntegerField()
     property_size = models.IntegerField()
     is_active = models.BooleanField(default=True)
+    corner = models.BooleanField(blank=True)
+    gated = models.BooleanField(blank=True)
 
     availability = models.DateTimeField()
 
