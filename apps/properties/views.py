@@ -19,7 +19,7 @@ from apps.properties.serializers import (
 
 from apps.profiles.models import Contacted, UserProfileModel
 
-from django.db.models import F
+from django.db.models import F, Q
 from rest_flex_fields import FlexFieldsModelViewSet
 
 # Create your views here.
@@ -158,6 +158,8 @@ class PropertyFilter(generics.ListAPIView):
         for_status = self.request.query_params.get("for")
         up_limit = self.request.query_params.get("max")
         low_limit = self.request.query_params.get("min")
+        low_area_limit = self.request.query_params.get("minarea")
+        up_area_limit = self.request.query_params.get("maxarea")
         bathroom = self.request.query_params.get("bathrooms")
         bedroom = self.request.query_params.get("bedrooms")
         availability = self.request.query_params.get("availability")
@@ -165,6 +167,8 @@ class PropertyFilter(generics.ListAPIView):
         popular = self.request.query_params.get("popular")
         featured = self.request.query_params.get("featured")
         location = self.request.query_params.get("location")
+
+        print(bedroom)
 
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
@@ -179,15 +183,28 @@ class PropertyFilter(generics.ListAPIView):
         if type is not None:
             queryset = queryset.filter(property_type=type)
         if furnishing is not None:
-            queryset = queryset.filter(furnishing_status=furnishing)
+            filter = Q()
+            for filter_q in furnishing:
+                filter = filter | Q(furnishing_status=filter_q)
+            queryset = queryset.filter(filter)
         if low_limit is not None:
             queryset = queryset.filter(price__gte=low_limit)
         if up_limit is not None:
             queryset = queryset.filter(price__lte=up_limit)
+        if low_area_limit is not None:
+            queryset = queryset.filter(property_size__gte=low_area_limit)
+        if up_area_limit is not None:
+            queryset = queryset.filter(property_size__lte=up_area_limit)
         if bathroom is not None:
-            queryset = queryset.filter(bathrooms=bathroom)
+            filter = Q()
+            for bathroom_q in bathroom:
+                filter = filter | Q(bathrooms=bathroom_q)
+            queryset = queryset.filter(filter)
         if bedroom is not None:
-            queryset = queryset.filter(bedrooms=bedroom)
+            filter = Q()
+            for filter_q in bedroom:
+                filter = filter | Q(bedrooms=filter_q)
+            queryset = queryset.filter(filter)
         if availability is not None:
             queryset = queryset.filter(availability=availability)
         if possession is not None:
