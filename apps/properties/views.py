@@ -184,6 +184,7 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(property_type=type)
         if furnishing is not None:
             filter = Q()
+            furnishing =furnishing.split(',') 
             for filter_q in furnishing:
                 filter = filter | Q(furnishing_status=filter_q)
             queryset = queryset.filter(filter)
