@@ -167,6 +167,7 @@ class PropertyFilter(generics.ListAPIView):
         popular = self.request.query_params.get("popular")
         featured = self.request.query_params.get("featured")
         location = self.request.query_params.get("location")
+        floor = self.request.query_params.get("floor")
 
         print(bedroom)
 
@@ -182,6 +183,12 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(prime_property=prime)
         if type is not None:
             queryset = queryset.filter(property_type=type)
+        if floor is not None:
+            filter = Q()
+            floor = floor.split(',') 
+            for filter_q in floor:
+                filter = filter | Q(floor=floor)
+            queryset = queryset.filter(filter)
         if furnishing is not None:
             filter = Q()
             furnishing =furnishing.split(',') 

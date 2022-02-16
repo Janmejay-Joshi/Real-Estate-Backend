@@ -93,6 +93,15 @@ class PropertyModel(models.Model):
         ("4+", "4+"),
     ]
 
+    FLOOR_TYPE_CHOICES = [
+        ("Basement", "Basement"),
+        ("Ground", "Ground"),
+        ("1-4", "1-4"),
+        ("5-8", "5-8"),
+        ("9-12", "9-12"),
+        ("13+", "13+"),
+    ]
+
     FURNISHING_TYPE_CHOICES = [
         ("furnished", "Furnished"),
         ("semifurnished", "Semi furnished"),
@@ -100,13 +109,10 @@ class PropertyModel(models.Model):
     ]
 
     PROPERTY_TYPE_CHOICES = [
-        ("AP", "Apartment"),
-        ("IH", "Independent House"),
         ("VI", "Villa"),
-        ("BF", "Builder Floor"),
-        ("PH", "Penthouse"),
-        ("SA", "Studio Apartment"),
-        ("OT", "Other"),
+        ("FL", "Flat"),
+        ("CM", "Commercial"),
+        ("PT", "Plot"),
     ]
 
     POSSESSION_TYPE_CHOICES = [
@@ -125,6 +131,7 @@ class PropertyModel(models.Model):
     possession = models.CharField(max_length=25, choices=POSSESSION_TYPE_CHOICES)
 
     property_type = models.CharField(max_length=2, choices=PROPERTY_TYPE_CHOICES)
+    floor = models.CharField(max_length=8, choices=FLOOR_TYPE_CHOICES)
 
     # Auto Feilds
     timestamp = models.DateTimeField(auto_now_add=True)
