@@ -60,7 +60,7 @@ class PropertyModel(models.Model):
     location = models.CharField(max_length=50, verbose_name="Location")
     city = models.CharField(max_length=50, verbose_name="City")
     state = models.CharField(max_length=50, verbose_name="State")
-    # pincode = models.CharField(max_length=6)
+    pincode = models.CharField(max_length=6)
 
     prime_property = models.BooleanField(default=False)
     price = models.BigIntegerField()
