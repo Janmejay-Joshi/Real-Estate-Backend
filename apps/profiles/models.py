@@ -8,6 +8,17 @@ from apps.properties.models import PropertyModel
 # Create your models here.
 
 
+class PrimeModel(models.Model):
+    is_prime = models.BooleanField(default=False)
+    subscription_period = models.IntegerField(null=True)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return str(self.is_prime)
+
+
 class Contacted(models.Model):
     user = models.ForeignKey(
         "profiles.UserProfileModel",
@@ -44,7 +55,9 @@ class UserProfileModel(models.Model):
     mobile = models.CharField(max_length=10, verbose_name="Phone Number")
     city = models.CharField(max_length=50, verbose_name="City")
     state = models.CharField(max_length=50, verbose_name="State")
-    is_prime = models.BooleanField(default=False)
+    prime_status = models.OneToOneField(
+        "profiles.PrimeModel", on_delete=models.CASCADE, related_name="profile_prime"
+    )
     is_verified = models.BooleanField(default=False)
     properties = models.ManyToManyField(
         PropertyModel, related_name="properties", blank=True
@@ -68,5 +81,7 @@ class UserProfileModel(models.Model):
     ]
 
     user_type = models.CharField(max_length=11, choices=USER_TYPE_CHOICES)
-
     objects = models.Manager()
+
+    def __str__(self):
+        return str(self.user.username)

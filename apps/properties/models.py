@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from versatileimagefield.fields import VersatileImageField, PPOIField
 
 
@@ -61,14 +60,14 @@ class PropertyModel(models.Model):
     location = models.CharField(max_length=50, verbose_name="Location")
     city = models.CharField(max_length=50, verbose_name="City")
     state = models.CharField(max_length=50, verbose_name="State")
-    pincode = models.CharField(max_length=6)
+    # pincode = models.CharField(max_length=6)
 
     prime_property = models.BooleanField(default=False)
     price = models.BigIntegerField()
     property_size = models.IntegerField()
     is_active = models.BooleanField(default=True)
-    corner = models.BooleanField(blank=True)
-    gated = models.BooleanField(blank=True)
+    corner = models.BooleanField(null=True, blank=True)
+    gated = models.BooleanField(null=True, blank=True)
 
     availability = models.DateTimeField()
 
@@ -118,8 +117,8 @@ class PropertyModel(models.Model):
     ]
 
     POSSESSION_TYPE_CHOICES = [
-        ("Under Construction", "Under Construction"),
-        ("Ready To Move", "Ready To Move"),
+        ("under construction", "Under Construction"),
+        ("ready to move", "Ready To Move"),
     ]
 
     # Choice Based Feilds

@@ -10,10 +10,6 @@ class AmenitiesTagsSerializer(serializers.ModelSerializer):
     Serve Data for AmenitiesTags Model
     """
 
-    property = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="name"
-    )
-
     class Meta:
         model = AmenitiesTags
         fields = "__all__"

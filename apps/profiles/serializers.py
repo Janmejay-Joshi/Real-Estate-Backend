@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.profiles.models import Contacted, UserProfileModel
+from apps.profiles.models import Contacted, PrimeModel, UserProfileModel
 
 from rest_flex_fields import FlexFieldsModelSerializer
 
@@ -9,6 +9,12 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = "__all__"
+
+
+class PrimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrimeModel
         fields = "__all__"
 
 
@@ -34,7 +40,7 @@ class UserProfileSerializer(FlexFieldsModelSerializer):
         model = UserProfileModel
         fields = "__all__"
         read_only_fields = (
-            "is_prime",
+            "prime_status",
             "is_verified",
             "user",
         )
@@ -42,6 +48,7 @@ class UserProfileSerializer(FlexFieldsModelSerializer):
         expandable_fields = {
             "image": ("apps.properties.ImageSerializer"),
             "user": ("apps.profiles.UserSerializer"),
+            "prime_status": ("apps.profiles.PrimeSerializer"),
             "properties": ("apps.properties.PropertySerializer", {"many": True}),
             "wishlist": ("apps.properties.PropertySerializer", {"many": True}),
             "contacted_by": ("apps.profiles.ContactedSerializer", {"many": True}),

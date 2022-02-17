@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     # Custom Apps
     "apps.profiles",
     "apps.properties",
+    "apps.payments",
 ]
 
 SITE_ID = 1
@@ -156,7 +157,8 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
+RAZOR_KEY_ID = "rzp_test_fZKYjMuBhXDFuk"
+RAZOR_KEY_SECRET = "NZKM6V0kgO4rpTvcGeFCXkSV"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

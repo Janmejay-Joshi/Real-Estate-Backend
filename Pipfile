@@ -14,6 +14,8 @@ django-versatileimagefield = "*"
 django-filter = "*"
 drf-flex-fields = "*"
 python-magic-bin = "*"
+razorpay = "*"
+python-magic = "*"
 
 [dev-packages]
 
