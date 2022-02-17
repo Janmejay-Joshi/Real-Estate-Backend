@@ -54,12 +54,22 @@ class ContactedView(APIView):
         buyer = get_object_or_404(UserProfileModel, pk=request.data["buyer"])
         property = get_object_or_404(PropertyModel, pk=request.data["property"])
 
-        contact_owner = Contacted.objects.create(user=buyer, property=property)
-        contact_buyer = Contacted.objects.create(user=owner, property=property)
+        if (buyer.prime_status.contact_counter < buyer.prime_status.counter_limit) and (
+            buyer.prime_status.contact_counter < buyer.prime_status.counter_limit
+        ):
+            contact_owner = Contacted.objects.create(user=buyer, property=property)
+            contact_buyer = Contacted.objects.create(user=owner, property=property)
 
-        owner.contacted_by.add(contact_owner)
-        buyer.contacted_to.add(contact_buyer)
-        return Response(status=status.HTTP_201_CREATED)
+            owner.contacted_by.add(contact_owner)
+
+            buyer.contacted_to.add(contact_buyer)
+            buyer.prime_status.contact_counter += 1
+
+            owner.save()
+            buyer.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        return Response(status=status.HTTP_417_EXPECTATION_FAILED)
 
 
 class ImageViewSet(FlexFieldsModelViewSet):
@@ -223,9 +233,9 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(possession=possession)
         if for_status is not None:
             queryset = queryset.filter(for_status=for_status)
-        if popular is not None or popular is not False:
+        if popular:
             queryset = queryset.order_by("-visits")
-        if featured is not None or featured is not False:
+        if featured:
             queryset = queryset.order_by("-prime_property")
         return queryset
 

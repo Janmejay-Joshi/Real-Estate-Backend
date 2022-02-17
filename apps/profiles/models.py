@@ -10,7 +10,10 @@ from apps.properties.models import PropertyModel
 
 class PrimeModel(models.Model):
     is_prime = models.BooleanField(default=False)
+    contact_counter = models.IntegerField(default=0)
+    counter_limit = models.IntegerField(default=0)
     subscription_period = models.IntegerField(null=True)
+    subscription_type = models.CharField(max_length=10, null=True)
     timestamp = models.DateTimeField(auto_now=True)
 
     objects = models.Manager()
