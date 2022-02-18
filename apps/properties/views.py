@@ -61,7 +61,7 @@ class ContactedView(APIView):
             and (
                 buyer.prime_status.timestamp
                 + timedelta(days=buyer.prime_status.subscription_period)
-                > datetime.now()
+                > datetime.now(timezone.utc)
             )
         ):
             if not (Contacted.objects.filter(user=owner, property=property)):
