@@ -21,6 +21,7 @@ from apps.profiles.models import Contacted, UserProfileModel
 
 from django.db.models import F, Q
 from rest_flex_fields import FlexFieldsModelViewSet
+from datetime import datetime, timedelta, timezone
 
 # Create your views here.
 
@@ -54,22 +55,40 @@ class ContactedView(APIView):
         buyer = get_object_or_404(UserProfileModel, pk=request.data["buyer"])
         property = get_object_or_404(PropertyModel, pk=request.data["property"])
 
-        if (buyer.prime_status.contact_counter < buyer.prime_status.counter_limit) and (
-            buyer.prime_status.contact_counter < buyer.prime_status.counter_limit
+        if (
+            (buyer.prime_status.contact_counter < buyer.prime_status.counter_limit)
+            and (buyer.prime_status.is_prime)
+            and (
+                buyer.prime_status.timestamp
+                + timedelta(days=buyer.prime_status.subscription_period)
+                > datetime.now()
+            )
         ):
-            contact_owner = Contacted.objects.create(user=buyer, property=property)
-            contact_buyer = Contacted.objects.create(user=owner, property=property)
+            if not (Contacted.objects.filter(user=owner, property=property)):
+                contact_owner = Contacted.objects.create(user=buyer, property=property)
+                contact_buyer = Contacted.objects.create(user=owner, property=property)
 
-            owner.contacted_by.add(contact_owner)
+                owner.contacted_by.add(contact_owner)
 
-            buyer.contacted_to.add(contact_buyer)
-            buyer.prime_status.contact_counter += 1
+                buyer.contacted_to.add(contact_buyer)
+                buyer.prime_status.contact_counter += 1
 
-            owner.save()
-            buyer.save()
-            return Response(status=status.HTTP_201_CREATED)
-
-        return Response(status=status.HTTP_417_EXPECTATION_FAILED)
+                owner.save()
+                buyer.save()
+                return Response(
+                    {"response": "Sucessfully Added"},
+                    status=status.HTTP_201_CREATED,
+                )
+            else:
+                return Response(
+                    {"error": "Already Contacted"},
+                    status=status.HTTP_417_EXPECTATION_FAILED,
+                )
+        else:
+            return Response(
+                {"error": "Prime Expired"},
+                status=status.HTTP_417_EXPECTATION_FAILED,
+            )
 
 
 class ImageViewSet(FlexFieldsModelViewSet):

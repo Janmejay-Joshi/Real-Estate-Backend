@@ -7,8 +7,18 @@ from .constants import PaymentStatus
 
 
 class Order(models.Model):
-    name = CharField(_("Customer Name"), max_length=254, blank=False, null=False)
-    amount = models.FloatField(_("Amount"), null=False, blank=False)
+
+    user = models.ForeignKey(
+        "profiles.UserProfileModel",
+        related_name="order_profile",
+        on_delete=models.DO_NOTHING,
+    )
+    subscription_type = CharField(
+        _("Subscription Type"),
+        max_length=200,
+        blank=False,
+        null=False,
+    )
     status = CharField(
         _("Payment Status"),
         default=PaymentStatus.PENDING,
@@ -29,4 +39,4 @@ class Order(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f"{self.id}-{self.name}-{self.status}"
+        return f"{self.id}-{self.user}-{self.status}"
