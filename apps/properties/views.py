@@ -117,7 +117,7 @@ class PropertyViewSet(GenericViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action in ("list", "retrieve", "create"):
+        if self.action in ("list", "retrieve", "create", "destroy"):
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAuthenticated]
@@ -160,7 +160,7 @@ class PropertyViewSet(GenericViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def destroy(self, request):
+    def destroy(self, request, pk):
         item = self.get_object()
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -288,7 +288,7 @@ class AmenitiesTagsViewSets(GenericViewSet):
         serializer = self.get_serializer(item)
         return Response(serializer.data)
 
-    def destroy(self, request):
+    def destroy(self, request, pk):
         item = self.get_object()
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

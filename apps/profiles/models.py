@@ -26,12 +26,12 @@ class Contacted(models.Model):
     user = models.ForeignKey(
         "profiles.UserProfileModel",
         related_name="contact_profile",
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
     )
     property = models.ForeignKey(
         "properties.PropertyModel",
         related_name="contacted_property",
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
     )
 
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -63,7 +63,9 @@ class UserProfileModel(models.Model):
     )
     is_verified = models.BooleanField(default=False)
     properties = models.ManyToManyField(
-        PropertyModel, related_name="properties", blank=True
+        PropertyModel,
+        related_name="properties",
+        blank=True,
     )
     wishlist = models.ManyToManyField(
         PropertyModel, related_name="wishlist", blank=True

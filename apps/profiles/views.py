@@ -71,7 +71,7 @@ class UserProfileViewSet(FlexFieldsModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def destroy(self, request):
+    def destroy(self, request, user__username):
         user = self.get_object()
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

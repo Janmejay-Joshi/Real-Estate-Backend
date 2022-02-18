@@ -1,8 +1,14 @@
+from datetime import datetime, timedelta, timezone
 from django.contrib.admin.decorators import action
 from django.http.response import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_417_EXPECTATION_FAILED
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_208_ALREADY_REPORTED,
+    HTTP_417_EXPECTATION_FAILED,
+)
 from rest_framework.views import APIView
 from django.conf import settings
 from apps.payments.constants import PaymentStatus
@@ -26,6 +32,20 @@ class PrimePaymentView(APIView):
     def post(self, request):
         user = UserProfileModel.objects.get(pk=request.data["user"])
         subscription_type = request.data["subscription_type"]
+
+        if (
+            (user.prime_status.contact_counter < user.prime_status.counter_limit)
+            and (user.prime_status.is_prime)
+            and (
+                user.prime_status.timestamp
+                + timedelta(days=user.prime_status.subscription_period)
+                > datetime.now(timezone.utc)
+            )
+        ):
+            return Response(
+                {"error": "Already an Valid Prime User"},
+                status=HTTP_208_ALREADY_REPORTED,
+            )
 
         if subscription_type == "Basic":
             ammount = 4900
