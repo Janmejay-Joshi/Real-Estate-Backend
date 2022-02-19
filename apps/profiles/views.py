@@ -57,6 +57,9 @@ class UserProfileUsernameViewSet(FlexFieldsModelViewSet):
 
     def update(self, request, user__username):
         user = self.get_object()
+        user.user.first_name = request.data["first_name"]
+        user.user.last_name = request.data["last_name"]
+        user.save()
         serializer = self.get_serializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -65,6 +68,9 @@ class UserProfileUsernameViewSet(FlexFieldsModelViewSet):
 
     def partial_update(self, request, user__username):
         user = self.get_object()
+        user.user.first_name = request.data["first_name"]
+        user.user.last_name = request.data["last_name"]
+        user.save()
         serializer = self.get_serializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
