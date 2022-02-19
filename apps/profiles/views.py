@@ -25,7 +25,7 @@ class UserProfileViewSet(FlexFieldsModelViewSet):
     serializer_class = UserProfileSerializer
     queryset = UserProfileModel.objects.all()
     permission_classes = [DjangoObjectPermissions]
-    lookup_field = "user__username"
+    lookup_field = "mobile"
 
     def get_permissions(self):
         """
@@ -50,12 +50,12 @@ class UserProfileViewSet(FlexFieldsModelViewSet):
         # return self.get_paginated_response(self.paginate_queryset(serializer.data))
         return Response(serializer.data)
 
-    def retrieve(self, request, user__username):
+    def retrieve(self, request, mobile):
         user = self.get_object()
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
-    def update(self, request, user__username):
+    def update(self, request, mobile):
         user = self.get_object()
         serializer = self.get_serializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -63,7 +63,7 @@ class UserProfileViewSet(FlexFieldsModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def partial_update(self, request, user__username):
+    def partial_update(self, request, mobile):
         user = self.get_object()
         serializer = self.get_serializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -71,7 +71,7 @@ class UserProfileViewSet(FlexFieldsModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def destroy(self, request, user__username):
+    def destroy(self, request, mobile):
         user = self.get_object()
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
