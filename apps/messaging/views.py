@@ -19,7 +19,7 @@ def randomOTPGenerate():
 class BroadcastOTP(APIView):
     @csrf_exempt
     def post(self, request, format=None):
-        otp_object = OTPModel.objects.get(user=request.data["user"])
+        otp_object = OTPModel.objects.get(mobile=request.data["phone"])
         otp_object.otp = randomOTPGenerate()
         otp_object.save()
 
@@ -28,7 +28,7 @@ class BroadcastOTP(APIView):
         print(message_to_broadcast)
 
         client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-        recipient = request.data["phone"]
+        recipient = "+91" + request.data["phone"]
         if recipient:
             client.messages.create(
                 to=recipient, from_=settings.TWILIO_NUMBER, body=message_to_broadcast
