@@ -12,6 +12,6 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         prime = PrimeModel.objects.create()
         user = UserProfileModel.objects.create(
-            user=instance, prime_status=prime, phone=f"{randint(0,10000000)}"
+            user=instance, prime_status=prime, mobile=f"{randint(0,10000000)}"
         )
         OTPModel.objects.create(user=user)

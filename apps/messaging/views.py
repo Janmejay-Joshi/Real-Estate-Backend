@@ -19,7 +19,9 @@ def randomOTPGenerate():
 class BroadcastOTP(APIView):
     @csrf_exempt
     def post(self, request, format=None):
-        otp_object = OTPModel.objects.get(mobile=request.data["phone"])
+
+        user = UserProfileModel.objects.get(mobile=request.data["phone"])
+        otp_object = OTPModel.objects.get(user=user)
         otp_object.otp = randomOTPGenerate()
         otp_object.save()
 
@@ -39,9 +41,9 @@ class BroadcastOTP(APIView):
 class OTPCallback(APIView):
     @csrf_exempt
     def post(self, request, format=None):
-        otp_object = OTPModel.objects.get(user=request.data["user"])
+        user = UserProfileModel.objects.get(mobile=request.data["phone"])
+        otp_object = OTPModel.objects.get(user=user)
         if otp_object.otp == request.data["OTP"]:
-            user = UserProfileModel.objects.get(user=request.data["user"])
             user.is_verified = True
             user.save()
 
