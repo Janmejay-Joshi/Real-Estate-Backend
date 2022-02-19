@@ -117,10 +117,10 @@ class PropertyViewSet(GenericViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action in ("list", "retrieve", "create", "destroy"):
+        if self.action in ("list", "retrieve", "create"):
             permission_classes = [AllowAny]
         else:
-            permission_classes = [IsAuthenticated]
+            permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
 
     def create(self, request, *args, **kwargs):

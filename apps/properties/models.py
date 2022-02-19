@@ -123,16 +123,22 @@ class PropertyModel(models.Model):
 
     # Choice Based Feilds
 
-    furnishing_status = models.CharField(max_length=25, choices=FURNISHING_TYPE_CHOICES)
-    for_status = models.CharField(max_length=4, choices=FOR_TYPE_CHOICES)
+    furnishing_status = models.CharField(
+        max_length=25, choices=FURNISHING_TYPE_CHOICES, blank=True
+    )
+    for_status = models.CharField(max_length=4, choices=FOR_TYPE_CHOICES, blank=True)
 
-    bathrooms = models.CharField(max_length=2, choices=BATHROOMS_TYPE_CHOICES)
-    bedrooms = models.CharField(max_length=2, choices=BEDROOMS_TYPE_CHOICES)
+    bathrooms = models.CharField(
+        max_length=2, choices=BATHROOMS_TYPE_CHOICES, blank=True
+    )
+    bedrooms = models.CharField(max_length=2, choices=BEDROOMS_TYPE_CHOICES, blank=True)
 
-    possession = models.CharField(max_length=25, choices=POSSESSION_TYPE_CHOICES)
+    possession = models.CharField(
+        max_length=25, choices=POSSESSION_TYPE_CHOICES, blank=True
+    )
 
     property_type = models.CharField(max_length=2, choices=PROPERTY_TYPE_CHOICES)
-    floor = models.CharField(max_length=8, choices=FLOOR_TYPE_CHOICES)
+    floor = models.CharField(max_length=8, choices=FLOOR_TYPE_CHOICES, null=True)
 
     # Auto Feilds
     timestamp = models.DateTimeField(auto_now_add=True)
