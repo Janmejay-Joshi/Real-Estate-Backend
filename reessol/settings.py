@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "apps.profiles",
     "apps.properties",
     "apps.payments",
+    "apps.messaging",
 ]
 
 SITE_ID = 1
@@ -182,3 +183,11 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     "http://localhost:3000",
     "https://reessol.vercel.app",
 ]
+
+TWILIO_ACCOUNT_SID = "AC3c6df4254ae50cc368fb113be167befe"
+TWILIO_AUTH_TOKEN = "0ab6f28b4cc88265523f9b6a708b698b"
+
+# TWILIO_ACCOUNT_SID = "AC9c4ca64a1177382f4fc0162a3d11a31d"
+# TWILIO_AUTH_TOKEN = "5977d694abfaf80a3a3aced4af3718dc"
+# TWILIO_NUMBER = "+19036626716"
+TWILIO_NUMBER = "+15005550006"

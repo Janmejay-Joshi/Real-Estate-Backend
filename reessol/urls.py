@@ -24,6 +24,7 @@ urlpatterns = [
     path("api/", include("apps.profiles.urls")),
     path("api/", include("apps.properties.urls")),
     path("api/", include("apps.payments.urls")),
+    path("api/", include("apps.messaging.urls")),
     path("auth/", include("dj_rest_auth.urls")),
     path("auth/register/", include("dj_rest_auth.registration.urls")),
 ]

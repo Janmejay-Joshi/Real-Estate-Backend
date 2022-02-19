@@ -16,6 +16,7 @@ drf-flex-fields = "*"
 python-magic-bin = "*"
 razorpay = "*"
 python-magic = "*"
+twilio = "*"
 
 [dev-packages]
 
