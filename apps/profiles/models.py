@@ -54,7 +54,6 @@ class UserProfileModel(models.Model):
         "properties.Image", null=True, related_name="cover", on_delete=SET_NULL
     )
 
-    bio = models.TextField(blank=True, verbose_name="User Bio")
     mobile = models.CharField(max_length=10, verbose_name="Phone Number", unique=True)
     city = models.CharField(max_length=50, verbose_name="City")
     state = models.CharField(max_length=50, verbose_name="State")

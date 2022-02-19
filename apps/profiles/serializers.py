@@ -35,6 +35,8 @@ class UserProfileSerializer(FlexFieldsModelSerializer):
     """
 
     username = serializers.ReadOnlyField(source="user.username")
+    first_name = serializers.ReadOnlyField(source="user.first_name")
+    last_name = serializers.ReadOnlyField(source="user.last_name")
 
     class Meta:
         model = UserProfileModel
