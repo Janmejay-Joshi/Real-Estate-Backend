@@ -17,7 +17,7 @@ from apps.properties.serializers import (
     PropertySerializer,
 )
 
-from apps.profiles.models import Contacted, UserProfileModel
+from apps.profiles.models import Contacted, PrimeModel, UserProfileModel
 
 from django.db.models import F, Q
 from rest_flex_fields import FlexFieldsModelViewSet
@@ -64,14 +64,16 @@ class ContactedView(APIView):
                 > datetime.now(timezone.utc)
             )
         ):
-            if not (Contacted.objects.filter(user=owner, property=property)):
+            if not (Contacted.objects.filter(user=buyer, property=property)):
                 contact_owner = Contacted.objects.create(user=buyer, property=property)
                 contact_buyer = Contacted.objects.create(user=owner, property=property)
 
                 owner.contacted_by.add(contact_owner)
 
                 buyer.contacted_to.add(contact_buyer)
-                buyer.prime_status.contact_counter += 1
+                buyer_prime = PrimeModel.objects.get(pk=buyer.prime_status.id)
+                buyer_prime.contact_counter += 1
+                buyer_prime.save()
 
                 owner.save()
                 buyer.save()
