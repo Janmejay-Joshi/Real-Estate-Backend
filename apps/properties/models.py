@@ -35,19 +35,27 @@ class PropertyModel(models.Model):
     # MultiValued Feilds
 
     posted_by = models.ForeignKey(
-        "profiles.UserProfileModel", on_delete=models.CASCADE, related_name="posted_by"
+        "profiles.UserProfileModel",
+        on_delete=models.CASCADE,
+        related_name="posted_by",
     )
 
     image = models.ManyToManyField(
-        "properties.Image", related_name="products", blank=True
+        "properties.Image",
+        related_name="products",
+        blank=True,
     )
 
     amenities = models.ManyToManyField(
-        AmenitiesTags, blank=True, related_name="amenities"
+        AmenitiesTags,
+        blank=True,
+        related_name="amenities",
     )
 
     wished_by = models.ManyToManyField(
-        "profiles.UserProfileModel", related_name="wished_by", blank=True
+        "profiles.UserProfileModel",
+        related_name="wished_by",
+        blank=True,
     )
 
     # General Feilds
@@ -55,11 +63,26 @@ class PropertyModel(models.Model):
     name = models.SlugField(max_length=80)
     property_name = models.TextField(max_length=80)
 
-    description = models.TextField(null=True, verbose_name="Property Description")
-    address = models.CharField(max_length=255, verbose_name="Property Address")
-    location = models.CharField(max_length=50, verbose_name="Location")
-    city = models.CharField(max_length=50, verbose_name="City")
-    state = models.CharField(max_length=50, verbose_name="State")
+    description = models.TextField(
+        null=True,
+        verbose_name="Property Description",
+    )
+    address = models.CharField(
+        max_length=255,
+        verbose_name="Property Address",
+    )
+    location = models.CharField(
+        max_length=50,
+        verbose_name="Location",
+    )
+    city = models.CharField(
+        max_length=50,
+        verbose_name="City",
+    )
+    state = models.CharField(
+        max_length=50,
+        verbose_name="State",
+    )
     pincode = models.CharField(max_length=6)
 
     prime_property = models.BooleanField(default=False)
@@ -124,21 +147,45 @@ class PropertyModel(models.Model):
     # Choice Based Feilds
 
     furnishing_status = models.CharField(
-        max_length=25, choices=FURNISHING_TYPE_CHOICES, blank=True
+        max_length=25,
+        choices=FURNISHING_TYPE_CHOICES,
+        blank=True,
+        null=True,
     )
-    for_status = models.CharField(max_length=4, choices=FOR_TYPE_CHOICES, blank=True)
+    for_status = models.CharField(
+        max_length=4,
+        choices=FOR_TYPE_CHOICES,
+        blank=True,
+    )
 
     bathrooms = models.CharField(
-        max_length=2, choices=BATHROOMS_TYPE_CHOICES, blank=True
+        max_length=2,
+        choices=BATHROOMS_TYPE_CHOICES,
+        blank=True,
+        null=True,
     )
-    bedrooms = models.CharField(max_length=2, choices=BEDROOMS_TYPE_CHOICES, blank=True)
+    bedrooms = models.CharField(
+        max_length=2,
+        choices=BEDROOMS_TYPE_CHOICES,
+        blank=True,
+        null=True,
+    )
 
     possession = models.CharField(
-        max_length=25, choices=POSSESSION_TYPE_CHOICES, blank=True
+        max_length=25,
+        choices=POSSESSION_TYPE_CHOICES,
+        blank=True,
     )
 
-    property_type = models.CharField(max_length=2, choices=PROPERTY_TYPE_CHOICES)
-    floor = models.CharField(max_length=8, choices=FLOOR_TYPE_CHOICES, null=True)
+    property_type = models.CharField(
+        max_length=2,
+        choices=PROPERTY_TYPE_CHOICES,
+    )
+    floor = models.CharField(
+        max_length=8,
+        choices=FLOOR_TYPE_CHOICES,
+        null=True,
+    )
 
     # Auto Feilds
     timestamp = models.DateTimeField(auto_now_add=True)
