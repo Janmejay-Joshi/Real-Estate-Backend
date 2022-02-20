@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_flex_fields.views import FlexFieldsModelViewSet
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -57,9 +58,10 @@ class UserProfileUsernameViewSet(FlexFieldsModelViewSet):
 
     def update(self, request, user__username):
         user = self.get_object()
-        user.user.first_name = request.data["first_name"]
-        user.user.last_name = request.data["last_name"]
-        user.save()
+        django_user = User.objects.get(username=user__username)
+        django_user.first_name = request.data["first_name"]
+        django_user.last_name = request.data["last_name"]
+        django_user.save()
         serializer = self.get_serializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -68,9 +70,10 @@ class UserProfileUsernameViewSet(FlexFieldsModelViewSet):
 
     def partial_update(self, request, user__username):
         user = self.get_object()
-        user.user.first_name = request.data["first_name"]
-        user.user.last_name = request.data["last_name"]
-        user.save()
+        django_user = User.objects.get(username=user__username)
+        django_user.first_name = request.data["first_name"]
+        django_user.last_name = request.data["last_name"]
+        django_user.save()
         serializer = self.get_serializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
