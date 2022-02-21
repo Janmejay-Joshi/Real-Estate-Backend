@@ -33,10 +33,7 @@ class WishUpdateView(APIView):
 
         try:
             if (
-                profile.__class__.objects.filter(wishlist__pk=request.data["property"])[
-                    0
-                ]
-                == profile
+                UserProfileModel.objects.get(wishlist__pk=request.data["property"]) == profile
             ):
                 property.wished_by.remove(profile)
                 profile.wishlist.remove(property)
