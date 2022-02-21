@@ -38,12 +38,14 @@ class WishUpdateView(APIView):
                 property.wished_by.remove(profile)
                 profile.wishlist.remove(property)
                 return Response(status=status.HTTP_204_NO_CONTENT)
-        except IndexError:
+            else:
+                property.wished_by.add(profile)
+                profile.wishlist.add(property)
+                return Response(status=status.HTTP_201_CREATED)
+        except:
             property.wished_by.add(profile)
             profile.wishlist.add(property)
             return Response(status=status.HTTP_201_CREATED)
-
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ContactedView(APIView):
