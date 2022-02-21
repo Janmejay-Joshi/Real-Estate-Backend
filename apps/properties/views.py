@@ -83,7 +83,7 @@ class ContactedView(APIView):
             else:
                 return Response(
                     {"error": "Already Contacted"},
-                    status=status.HTTP_417_EXPECTATION_FAILED,
+                    status=status.HTTP_208_ALREADY_REPORTED,
                 )
         else:
             return Response(
