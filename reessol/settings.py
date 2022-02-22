@@ -66,6 +66,8 @@ SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "product_headshot": [
