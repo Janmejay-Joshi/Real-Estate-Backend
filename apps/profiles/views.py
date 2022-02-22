@@ -31,8 +31,8 @@ class UserFilter(generics.ListAPIView):
 
         if agent_order is not None:
             queryset = queryset.filter(city=agent_order)
+            queryset = queryset.filter(user_type="Agent")
             queryset = queryset.order_by("prime_status__is_prime")
-            queryset = queryset.order_by("user_type")
 
         return queryset
 
