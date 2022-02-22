@@ -25,7 +25,7 @@ class BroadcastOTP(APIView):
         otp_object.otp = randomOTPGenerate()
         otp_object.save()
 
-        message_to_broadcast = f"Your 9Roof Login OTP is {otp_object.otp}"
+        message_to_broadcast = f"Your 9Roof Verification OTP is {otp_object.otp}"
 
         print(message_to_broadcast)
 
