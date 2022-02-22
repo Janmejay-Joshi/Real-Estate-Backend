@@ -17,6 +17,7 @@ python-magic-bin = "*"
 razorpay = "*"
 python-magic = "*"
 twilio = "*"
+setuptools = "*"
 
 [dev-packages]
 

@@ -177,6 +177,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://reessol.vercel.app",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
