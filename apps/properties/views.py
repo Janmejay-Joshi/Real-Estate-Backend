@@ -33,7 +33,8 @@ class WishUpdateView(APIView):
 
         try:
             if (
-                UserProfileModel.objects.get(wishlist__pk=request.data["property"]) == profile
+                UserProfileModel.objects.get(wishlist__pk=request.data["property"])
+                == profile
             ):
                 property.wished_by.remove(profile)
                 profile.wishlist.remove(property)
@@ -200,6 +201,7 @@ class PropertyFilter(generics.ListAPIView):
         floor = self.request.query_params.get("floor")
         corner = self.request.query_params.get("corner")
         gated = self.request.query_params.get("gated")
+        prime_order = self.request.query_params.get("prime_order")
 
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
@@ -257,6 +259,10 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.order_by("-visits")
         if featured:
             queryset = queryset.order_by("-prime_property")
+        if prime_order:
+            queryset = queryset.order_by("-posted_by__prime_status__is_prime")
+            queryset = queryset.order_by("posted_by__user_type")
+
         return queryset
 
 
