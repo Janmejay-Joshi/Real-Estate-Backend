@@ -202,6 +202,7 @@ class PropertyFilter(generics.ListAPIView):
         corner = self.request.query_params.get("corner")
         gated = self.request.query_params.get("gated")
         prime_order = self.request.query_params.get("prime_order")
+        agent_order = self.request.query_params.get("agent_order")
 
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
@@ -211,6 +212,9 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(posted_by=posted_by)
         if city is not None:
             queryset = queryset.filter(city=city)
+        if agent_order is not None:
+            queryset = queryset.filter(posted_by__city=agent_order)
+            queryset = queryset.order_by("posted_by__user_type")
         if prime is not None:
             queryset = queryset.filter(prime_property=prime)
         if type is not None:

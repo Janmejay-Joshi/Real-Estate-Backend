@@ -7,12 +7,34 @@ from rest_framework.permissions import (
     DjangoObjectPermissions,
     IsAuthenticated,
 )
-from rest_framework import status
+from rest_framework import generics, status
 
 from apps.profiles.models import UserProfileModel
 from apps.profiles.serializers import UserProfileSerializer
 
 # Create your views here.
+
+
+class UserFilter(generics.ListAPIView):
+    """
+    Fetch all (Property) instance with filters provided in the params
+    url: /api/filter
+    example: /api/filter?city=indore&prime=True
+    actions: [GET]
+    """
+
+    serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        queryset = UserProfileModel.objects.all()
+        agent_order = self.request.query_params.get("agent_order")
+
+        if agent_order is not None:
+            queryset = queryset.filter(city=agent_order)
+            queryset = queryset.order_by("prime_status__is_prime")
+            queryset = queryset.order_by("user_type")
+
+        return queryset
 
 
 class UserProfileUsernameViewSet(FlexFieldsModelViewSet):
