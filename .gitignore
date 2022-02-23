@@ -1,6 +1,4 @@
 db.sqlite3
 media/
-apps/payments/migrations
-apps/profiles/migrations
-apps/properties/migrations
-apps/messaging/migrations
+apps/**/migrations
+reessol/__pycache__/
