@@ -1,8 +1,34 @@
+from enum import unique
 from django.db import models
 from versatileimagefield.fields import VersatileImageField, PPOIField
 
 
 # Create your models here.
+
+
+class SublocationModel(models.Model):
+    location = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.location
+
+    objects = models.Manager
+
+
+class CityModel(models.Model):
+    city = models.CharField(max_length=100, unique=True)
+    sublocations = models.ManyToManyField(
+        SublocationModel,
+        related_name="city_sublocation",
+    )
+
+    def __str__(self):
+        return self.city
+
+    objects = models.Manager
 
 
 class AmenitiesTags(models.Model):

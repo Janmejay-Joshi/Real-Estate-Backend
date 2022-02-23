@@ -1,8 +1,18 @@
 from rest_framework import serializers
 
-from apps.properties.models import AmenitiesTags, PropertyModel, Image
+from apps.properties.models import AmenitiesTags, CityModel, PropertyModel, Image
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from rest_flex_fields import FlexFieldsModelSerializer
+
+
+class CitySerializer(serializers.ModelSerializer):
+    """
+    Serve Data for AmenitiesTags Model
+    """
+
+    class Meta:
+        model = CityModel
+        fields = "__all__"
 
 
 class AmenitiesTagsSerializer(serializers.ModelSerializer):

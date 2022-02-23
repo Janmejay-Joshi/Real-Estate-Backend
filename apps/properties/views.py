@@ -10,9 +10,16 @@ from rest_framework.permissions import (
     IsAuthenticated,
 )
 from rest_framework import status
-from apps.properties.models import AmenitiesTags, Image, PropertyModel
+from apps.properties.models import (
+    AmenitiesTags,
+    CityModel,
+    Image,
+    PropertyModel,
+    SublocationModel,
+)
 from apps.properties.serializers import (
     AmenitiesTagsSerializer,
+    CitySerializer,
     ImageSerializer,
     PropertySerializer,
 )
@@ -20,6 +27,7 @@ from apps.properties.serializers import (
 from apps.profiles.models import Contacted, PrimeModel, UserProfileModel
 
 from django.db.models import F, Q
+from django.core.exceptions import ObjectDoesNotExist
 from rest_flex_fields import FlexFieldsModelViewSet
 from datetime import datetime, timedelta, timezone
 
@@ -104,6 +112,17 @@ class ImageViewSet(FlexFieldsModelViewSet):
     queryset = Image.objects.all()
 
 
+class CityViewSet(FlexFieldsModelViewSet):
+    """
+    Create, update fetch or destroy an (Image) instance
+    url: /api/image/ , /api/image/<int:pk>
+    actions: [GET, POST, PUT, PATCH, DELETE]
+    """
+
+    serializer_class = CitySerializer
+    queryset = CityModel.objects.all()
+
+
 class PropertyViewSet(GenericViewSet):
     """
     Create, update fetch or destroy an (Property) instance
@@ -132,6 +151,22 @@ class PropertyViewSet(GenericViewSet):
 
         owner = get_object_or_404(UserProfileModel, pk=request.data["posted_by"])
         owner.properties.add(serializer.data["id"])
+        owner.save()
+
+        try:
+            SublocationModel.objects.get(location=request.data["location"])
+
+        except ObjectDoesNotExist:
+            location = SublocationModel.objects.create(
+                location=request.data["location"]
+            )
+            try:
+                city = CityModel.objects.get(city=request.data["city"])
+            except ObjectDoesNotExist:
+                city = CityModel.objects.create(city=request.data["city"])
+
+            city.sublocations.add(sublocations=location)
+            city.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

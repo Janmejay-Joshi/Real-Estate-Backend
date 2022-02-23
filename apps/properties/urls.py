@@ -3,6 +3,7 @@ from django.urls import path, include
 
 from apps.properties.views import (
     AmenitiesTagsViewSets,
+    CityViewSet,
     ContactedView,
     ImageViewSet,
     PropertyFilter,
@@ -14,6 +15,7 @@ router = DefaultRouter()
 router.register(r"property", PropertyViewSet)
 router.register(r"tags/amenities", AmenitiesTagsViewSets)
 router.register(r"image", ImageViewSet)
+router.register(r"city", CityViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
