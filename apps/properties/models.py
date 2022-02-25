@@ -23,6 +23,7 @@ class CityModel(models.Model):
     sublocations = models.ManyToManyField(
         SublocationModel,
         related_name="city_sublocation",
+        blank=True,
     )
 
     def __str__(self):
