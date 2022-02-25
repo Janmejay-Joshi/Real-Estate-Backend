@@ -244,7 +244,11 @@ class PropertyFilter(generics.ListAPIView):
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
         if location is not None:
-            queryset = queryset.filter(location=location)
+            filter = Q()
+            location = location.split(",")
+            for filter_q in location:
+                filter = filter | Q(location=location)
+            queryset = queryset.filter(filter)
         if posted_by is not None:
             queryset = queryset.filter(posted_by=posted_by)
         if city is not None:
