@@ -121,6 +121,7 @@ class CityViewSet(FlexFieldsModelViewSet):
 
     serializer_class = CitySerializer
     queryset = CityModel.objects.all()
+    lookup_field = "city"
 
 
 class PropertyViewSet(GenericViewSet):
@@ -156,7 +157,7 @@ class PropertyViewSet(GenericViewSet):
         try:
             SublocationModel.objects.get(location=request.data["location"])
 
-        except :
+        except:
             location = SublocationModel.objects.create(
                 location=request.data["location"]
             )
