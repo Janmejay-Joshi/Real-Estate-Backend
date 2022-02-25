@@ -163,7 +163,7 @@ class PropertyViewSet(GenericViewSet):
             )
             try:
                 city = CityModel.objects.get(city=request.data["city"])
-            except ObjectDoesNotExist:
+            except:
                 city = CityModel.objects.create(city=request.data["city"])
 
             city.sublocations.add(sublocations=location)
