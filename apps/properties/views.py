@@ -167,7 +167,7 @@ class PropertyViewSet(GenericViewSet):
         except:
             city = CityModel.objects.create(city=request.data["city"])
 
-        city.sublocations.add(sublocations=location)
+        city.sublocations.add(location)
         city.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
