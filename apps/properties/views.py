@@ -156,7 +156,7 @@ class PropertyViewSet(GenericViewSet):
         try:
             SublocationModel.objects.get(location=request.data["location"])
 
-        except ObjectDoesNotExist:
+        except :
             location = SublocationModel.objects.create(
                 location=request.data["location"]
             )
