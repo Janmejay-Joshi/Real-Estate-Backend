@@ -1,6 +1,11 @@
 from rest_framework import serializers
 
-from apps.properties.models import AmenitiesTags, CityModel, PropertyModel, Image
+from apps.properties.models import (
+    AmenitiesTags,
+    CityModel,
+    PropertyModel,
+    Image,
+)
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from rest_flex_fields import FlexFieldsModelSerializer
 
@@ -9,6 +14,10 @@ class CitySerializer(serializers.ModelSerializer):
     """
     Serve Data for AmenitiesTags Model
     """
+
+    sublocations = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="location"
+    )
 
     class Meta:
         model = CityModel
