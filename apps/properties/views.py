@@ -155,19 +155,20 @@ class PropertyViewSet(GenericViewSet):
         owner.save()
 
         try:
-            SublocationModel.objects.get(location=request.data["location"])
+            location = SublocationModel.objects.get(location=request.data["location"])
 
         except:
             location = SublocationModel.objects.create(
                 location=request.data["location"]
             )
-            try:
-                city = CityModel.objects.get(city=request.data["city"])
-            except:
-                city = CityModel.objects.create(city=request.data["city"])
 
-            city.sublocations.add(sublocations=location)
-            city.save()
+        try:
+            city = CityModel.objects.get(city=request.data["city"])
+        except:
+            city = CityModel.objects.create(city=request.data["city"])
+
+        city.sublocations.add(sublocations=location)
+        city.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
