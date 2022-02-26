@@ -276,18 +276,22 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(property_size__lte=up_area_limit)
         if bathroom is not None:
             filter = Q()
+            bathroom = bathroom.split(",")
             for bathroom_q in bathroom:
                 filter = filter | Q(bathrooms=bathroom_q)
             queryset = queryset.filter(filter)
         if bedroom is not None:
             filter = Q()
+            bedroom = bedroom.split(",")
             for filter_q in bedroom:
                 filter = filter | Q(bedrooms=filter_q)
             queryset = queryset.filter(filter)
         if location is not None:
             filter = Q()
+            location = location.split(",")
+            print(location)
             for filter_q in location:
-                filter = filter | Q(location=location)
+                filter = filter | Q(location=filter_q)
             queryset = queryset.filter(filter)
             print(queryset)
         if availability is not None:
