@@ -18,6 +18,9 @@ razorpay = "*"
 python-magic = "*"
 twilio = "*"
 setuptools = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
