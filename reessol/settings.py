@@ -27,8 +27,10 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-DJANGO_ALLOWED_HOSTS = ["ressol.vercel.app"]
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.getenv(
+    "DJANGO_ALLOWED_HOSTS",
+    "127.0.0.1,localhost,https://ressol.vercel.app/,reessol-backend-new-zbsfa.ondigitalocean.app",
+).split(",")
 
 
 # Application definition
