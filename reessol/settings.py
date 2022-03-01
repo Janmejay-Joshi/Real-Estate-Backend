@@ -184,11 +184,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://reessol.vercel.app",
+    "https://reessol-backend-new-zbsfa.ondigitalocean.app",
 ]
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     "http://localhost:3000",
     "https://reessol.vercel.app",
+    "https://reessol-backend-new-zbsfa.ondigitalocean.app",
 ]
 
 TWILIO_ACCOUNT_SID = "AC24d867a57956cc50c13485855be16f80"
