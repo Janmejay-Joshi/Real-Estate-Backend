@@ -193,6 +193,12 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     "https://reessol-backend-new-zbsfa.ondigitalocean.app",
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",
+    "https://reessol.vercel.app",
+    "https://reessol-backend-new-zbsfa.ondigitalocean.app",
+)
+
 TWILIO_ACCOUNT_SID = "AC24d867a57956cc50c13485855be16f80"
 TWILIO_AUTH_TOKEN = "cffef1ee6fa1ae861d1f2ef1d1b1a52f"
 
