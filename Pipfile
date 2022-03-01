@@ -21,6 +21,7 @@ setuptools = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
+django-referrer-policy = "*"
 
 [dev-packages]
 

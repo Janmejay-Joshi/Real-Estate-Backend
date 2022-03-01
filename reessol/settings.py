@@ -81,6 +81,7 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ("small_square_crop", "crop__50x50"),
     ]
 }
+REFERRER_POLICY = "no-referrer"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -93,6 +94,7 @@ MIDDLEWARE = [
     # Third Party
     ## CORS
     "corsheaders.middleware.CorsMiddleware",
+    "django_referrer_policy.middleware.ReferrerPolicyMiddleware",
 ]
 
 ROOT_URLCONF = "reessol.urls"
