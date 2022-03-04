@@ -240,6 +240,7 @@ class PropertyFilter(generics.ListAPIView):
         gated = self.request.query_params.get("gated")
         prime_order = self.request.query_params.get("prime_order")
         agent_order = self.request.query_params.get("agent_order")
+        latest = self.request.query_params.get("latest")
 
         if property_name is not None:
             queryset = queryset.filter(property_name=property_name)
@@ -306,6 +307,8 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.filter(for_status=for_status)
         if popular:
             queryset = queryset.order_by("-visits")
+        if latest:
+            queryset = queryset.order_by("-timestamp")
         if featured:
             queryset = queryset.order_by("-prime_property")
         if prime_order:
