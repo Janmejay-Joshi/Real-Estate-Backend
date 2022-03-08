@@ -235,6 +235,7 @@ class PropertyFilter(generics.ListAPIView):
         popular = self.request.query_params.get("popular")
         featured = self.request.query_params.get("featured")
         location = self.request.query_params.get("location")
+        sublocality = self.request.query_params.get("sublocality")
         floor = self.request.query_params.get("floor")
         corner = self.request.query_params.get("corner")
         gated = self.request.query_params.get("gated")
@@ -253,6 +254,8 @@ class PropertyFilter(generics.ListAPIView):
             queryset = queryset.order_by("posted_by__user_type")
         if prime is not None:
             queryset = queryset.filter(prime_property=prime)
+        if sublocality is not None:
+            queryset = queryset.filter(sublocality=sublocality)
         if type is not None:
             queryset = queryset.filter(property_type=type)
         if floor is not None:
