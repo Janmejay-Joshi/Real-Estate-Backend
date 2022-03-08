@@ -70,9 +70,13 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "assests")
 
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
@@ -122,13 +126,21 @@ WSGI_APPLICATION = "reessol.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-if len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
     if os.getenv("DATABASE_URL", None) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
