@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = os.getenv(
     "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost,https://ressol.vercel.app/,https://reessol-backend-new-zbsfa.ondigitalocean.app",
+    "127.0.0.1,localhost,https://ressol.vercel.app/,https://reessol-backend-new-zbsfa.ondigitalocean.app,https://reessol.com",
 ).split(",")
 
 
