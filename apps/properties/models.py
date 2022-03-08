@@ -94,22 +94,32 @@ class PropertyModel(models.Model):
         null=True,
         verbose_name="Property Description",
     )
+
     address = models.CharField(
         max_length=255,
         verbose_name="Property Address",
     )
+
     location = models.CharField(
         max_length=50,
         verbose_name="Location",
     )
+
+    sublocality = models.CharField(
+        max_length=50,
+        verbose_name="Sublocality",
+    )
+
     city = models.CharField(
         max_length=50,
         verbose_name="City",
     )
+
     state = models.CharField(
         max_length=50,
         verbose_name="State",
     )
+
     pincode = models.CharField(max_length=6)
 
     prime_property = models.BooleanField(default=False)
