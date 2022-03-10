@@ -95,11 +95,11 @@ class ContactedView(APIView):
                 print(message_to_broadcast)
 
                 client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-                recipient = "+91" + request.data[owner.mobile]
+                recipient = "whatsapp:+91" + request.data[owner.mobile]
                 if recipient:
                     client.messages.create(
                         to=recipient,
-                        from_=settings.TWILIO_NUMBER,
+                        from_=settings.TWILIO_WHATSAPP_NUMBER,
                         body=message_to_broadcast,
                     )
 
