@@ -27,9 +27,10 @@ from apps.properties.serializers import (
 from apps.profiles.models import Contacted, PrimeModel, UserProfileModel
 
 from django.db.models import F, Q
-from django.core.exceptions import ObjectDoesNotExist
 from rest_flex_fields import FlexFieldsModelViewSet
 from datetime import datetime, timedelta, timezone
+from twilio.rest import Client
+from django.conf import settings
 
 # Create your views here.
 
@@ -85,6 +86,23 @@ class ContactedView(APIView):
 
                 owner.save()
                 buyer.save()
+
+                message_to_broadcast = f"""
+                        Hi {owner.user.first_name},
+                        {buyer.user.first_name} {buyer.user.last_name} has just contacted you and wants to know about {property.property_name}.
+                        Connect now & keep checking the My Responses section on reessol.com for more contacts"
+                    """
+                print(message_to_broadcast)
+
+                client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+                recipient = "+91" + request.data[owner.mobile]
+                if recipient:
+                    client.messages.create(
+                        to=recipient,
+                        from_=settings.TWILIO_NUMBER,
+                        body=message_to_broadcast,
+                    )
+
                 return Response(
                     {"response": "Sucessfully Added"},
                     status=status.HTTP_201_CREATED,
